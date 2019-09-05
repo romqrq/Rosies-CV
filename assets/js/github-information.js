@@ -16,12 +16,12 @@ function userInformationHTML(user) {
 }
 
 
-function repoInformationHTML(repos) { //object returned from GitHub API ----- this one RETURNS AS AN ARRAY!!!
-    if (repos.length == 0) {
-        return `<div class="clearfix repo-list">No repos!`;
+function repoInformationHTML(repos) { //object returned from GitHub API AS AN ARRAY.
+    if (repos.length == 0) { 
+        return `<div class="clearfix repo-list">No repos!`; //css classes from boilerplate
     }
 
-    var listItemsHTML = repos.map(function(repo) {
+    var listItemsHTML = repos.map(function(repo) { //map() method like forEach() but returns AN ARRAY instead
         return `<li>
                     <a href="${repo.html_url}" target="_blank">${repo.name}</a>
                 </li>`;
@@ -32,7 +32,7 @@ function repoInformationHTML(repos) { //object returned from GitHub API ----- th
                     <strong>Repo List:</strong>
                 </p>
                 <ul>
-                    ${listItemsHTML.join("\n")}
+                    ${listItemsHTML.join("\n")} //join method. joins all with a new line so we don't have to iterate through them again
                 </ul>
             </div>`;
 }
@@ -40,6 +40,9 @@ function repoInformationHTML(repos) { //object returned from GitHub API ----- th
 
 
 function fetchGitHubInformation(event) { //why event argument?
+    $("#gh-user-data").html(""); //empties the divs
+    $("#gh-repo-data").html("");
+    
 
     var username = $("#gh-username").val(); //jquery selecting the #gh-username field and .val = the value in the field
     if (!username) { //if NOT username
@@ -75,6 +78,9 @@ function fetchGitHubInformation(event) { //why event argument?
             }
         });
 }
+
+$(document).ready(fetchGitHubInformation); // this makes sure the "octocat" profile will be showing once the page is loaded
+
 
 // function fetchGitHubInformation(event) { //why event argument?
 
