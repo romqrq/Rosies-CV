@@ -70,8 +70,10 @@ function fetchGitHubInformation(event) { //why event argument?
             if (errorResponse.status === 404) {
                 $("#gh-user-data").html(
                     `<h2>No info found for user ${username}</h2>`);
-            }
-            else { //in case the error isn't a 404
+            } else if (errorResponse.status === 403) { //added because GH limits the amount of requests for a period of time** Error 403 = forbidden
+             var resetTime = new Date(errorResponse.getResponseHeader('X-RateLimit-Reset')*1000); //the date we want to retrieve is inside the errorResponse, inside the headers and the "X-Rate..." is the one we want to target. it is presented as a UNIX timestamp so we need to multiply by 1000 and turn it into a date object 
+             $("#ugh-user-data").html(`<h4>Too many requests, please wait until ${resetTime.toLocaleTimeString()}</h4>`); //toLocaleTimeString method gets the local time from the browser
+            } else { //in case the error isn't a 404
                 console.log(errorResponse);
                 $("#gh-user-data").html(
                     `<h2>Error: ${errorResponse.responseJSON.message}</h2>`);
